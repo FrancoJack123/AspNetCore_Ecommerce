@@ -1,0 +1,152 @@
+﻿@model IEnumerable<_005_SistemaEcommerce.Models.Producto>
+
+@{
+    var session = ViewContext.HttpContext.Session;
+    ViewData["Title"] = "Index";
+}
+
+
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show my-4" role="alert">
+        <strong>@TempData["message"] !!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<!-- Jumbotron Header -->
+<header class="jumbotron my-4">
+    <h1 class="display-3">ASP.NET Core Ecommerce</h1>
+    @if (session.GetString("idCliente") != null)
+    {
+        <p class="lead">Bienvenido Usuario: <strong>@session.GetString("Cliente")</strong></p>
+    }
+</header>
+
+<div class="card mb-4">
+    <div class="card-header">
+        Filtros
+    </div>
+    
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            <div class="input-group mb-4">
+                <span class="input-group-text" id="basic-addon1">Buscar</span>
+                <input type="text" class="form-control" placeholder="Escribe el nombre" name="nombre" value="@ViewBag.NombreProducto">
+                <button type="submit" class="btn btn-secondary">
+                    <i class="bi bi-search"></i> Filtrar
+                </button>
+            </div>
+            
+            List<Categoria> categoria = (List<Categoria>) ViewBag.ListadoCategoria;
+            
+            <div class="d-flex justify-content-between">
+                @foreach (Categoria categorias in categoria)
+                {
+                    if (categorias.categoriaId == ViewBag.IdCategoria)
+                    {
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="idcategoria" value="@categorias.categoriaId" checked>
+                                @categorias.categoriaName
+                            </label>
+                        </div>
+                    }
+                    else{
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="idcategoria" value="@categorias.categoriaId">
+                                @categorias.categoriaName
+                            </label>
+                        </div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<!-- Page Features -->
+<div class="row text-center my-4">
+    @foreach (var item in Model)
+        {
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card h-100">
+                <img class="card-img-top" src="@Url.Content("~/Fotos/"+item.foto)" width="325"/>
+                    <div class="card-body">
+                        <p class="card-text">@Html.DisplayFor(modelItem => item.nombreProduc)</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-center">
+                        @Html.ActionLink("Detalles", "DetalleProducto", new { id = item.productoId }, new { @class="btn btn-success"})
+                        @if (session.GetString("idCliente") != null)
+                        {
+                            <form asp-action="AgregarCarrito" method="get">
+                                <input type="hidden" name="productoId" value="@item.productoId">
+                                <input type="hidden" name="cantidad" value="1">
+                                <button type="submit" class="btn btn-danger ml-4">Comprar</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+</div>
+
+<div class="d-flex justify-content-center my-4">
+    @if (ViewBag.cantTotal != 0)
+    {
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+                @if (ViewBag.NRO_PAG == 0)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Previous</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="/Tienda/Index?nro_pag=@(ViewBag.NRO_PAG - 1)&&idcategoria=@ViewBag.IdCategoria&&nombre=@ViewBag.NombreProducto">Previous</a>
+                    </li>
+                }
+
+
+                @for (int i = 0; i < ViewBag.CANT_PAGINAS; i++)
+                {
+                    if (ViewBag.NRO_PAG == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="/Tienda/Index?nro_pag=@i&&idcategoria=@ViewBag.IdCategoria&&nombre=@ViewBag.NombreProducto">@(i + 1)</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/Tienda/Index?nro_pag=@i&&idcategoria=@ViewBag.IdCategoria&&nombre=@ViewBag.NombreProducto">@(i + 1)</a>
+                        </li>
+                    }
+                }
+
+                @if (ViewBag.NRO_PAG == (ViewBag.CANT_PAGINAS - 1))
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="/Tienda/Index?nro_pag=@(ViewBag.NRO_PAG + 1)&&idcategoria=@ViewBag.IdCategoria&&nombre=@ViewBag.NombreProducto">Next</a>
+                    </li>
+                }
+
+
+            </ul>
+        </nav>
+    }
+</div>

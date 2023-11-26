@@ -1,0 +1,43 @@
+﻿@model _005_SistemaEcommerce.Models.Cliente
+@{
+}
+
+<!-- Page Content -->
+<div class="d-flex justify-content-center align-items-center" style="margin-top: 80px;">
+    <div class="" style="width: 700px;">
+
+        <h3 class="text-center h2 mb-4"><strong>Registro</strong></h3>
+
+        <form asp-action="Register" method="post">
+            <div class="form-group">
+                <label for="nombres">Nombres:</label> 
+                <input asp-for="nombre" class="form-control" type="text" required placeholder="Ingrese su nombre" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Apellido:</label> 
+                <input asp-for="apellido" class="form-control" type="text" required placeholder="Ingrese su apellido" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Telefono:</label>
+                <input asp-for="telefono" class="form-control" type="number" required placeholder="Ingrese su email" />
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Correo Electronico:</label> 
+                <input asp-for="correo" class="form-control" type="email" required placeholder="Ingrese su dirección" />
+            </div>
+
+            <div class="form-group">
+                <label for="pwd">Contraseña</label> 
+                <input asp-for="contrasenia" class="form-control" type="password" required placeholder="Ingrese su contraseña" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
+        </form>
+        @Html.ActionLink("Si ya tienes cuentas Inicie Sesion","Login", "Login", null, new { @class="link-underline-light text-dark"})
+    </div>
+</div>
+<!-- /.container -->

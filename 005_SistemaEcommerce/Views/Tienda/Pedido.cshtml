@@ -1,0 +1,56 @@
+﻿@model IEnumerable<_005_SistemaEcommerce.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Pedido";
+}
+
+<!-- Page Heading/Breadcrumbs -->
+<h1 class="my-3"><small>Pedido</small></h1>
+
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item">@Html.ActionLink("Ecommerce", "index", "Tienda")</li>
+    <li class="breadcrumb-item active">Pedido</li>
+</ol>
+
+<!-- Blog Post -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No. de Orden</th>
+                            <th>Fecha</th>
+                            <th>Valor</th>
+                            <th class="text-center center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.pedidoId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.fecha)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.precioTottal)
+                                </td>
+                                <td class="d-flex justify-content-center gap-3">
+                                    @Html.ActionLink("Ver Detalle", "DetallePedido", new { pedidoId=item.pedidoId }, new {@class="btn btn-success"})
+                                    <form asp-action="GenerarPdf" method="post">
+                                        <input type="hidden" value="@item.pedidoId" name="pedidoId">
+                                        <button formtarget="_blank" type="submit" class="btn btn-danger ml-3">Ver Pdf</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

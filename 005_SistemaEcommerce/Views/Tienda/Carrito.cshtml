@@ -1,0 +1,109 @@
+﻿@model IEnumerable<_005_SistemaEcommerce.Models.Carrito>
+
+@{
+    ViewData["Title"] = "Carrito";
+}
+
+
+<!-- Page Heading/Breadcrumbs -->
+<h1 class="my-3"><small>Carrito</small></h1>
+
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item">@Html.ActionLink("Ecommerce", "index", "Tienda")</li>
+    <li class="breadcrumb-item active">Carrito</li>
+</ol>
+
+<!-- Blog Post -->
+<div class="card" style="margin-bottom: 40px">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-header">
+                        Productos
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Precio Unitario</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    decimal total = 0.0m;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.productoName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.precio)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.cantidad)
+                                        </td>
+                                        <td>
+                                            @{
+                                                var precioTotal = item.cantidad * item.precio;
+                                                total += precioTotal;
+                                            }
+                                            @precioTotal
+                                        </td>
+                                        <td>
+                                            <form asp-action="EliminarCarrito" method="get">
+                                                <input type="hidden" name="idCarrito" value="@item.carritoId">
+                                                <button type="submit" class="btn btn-danger">Quitar</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        Detalles
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Carrito" method="post">
+                            <input type="hidden" name="precioTottal" value="@total" />
+                            <div class="mb-3">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" class="form-control" placeholder="Nombre" name="nombre">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Apellido</label>
+                                <input type="text" class="form-control" placeholder="Apellido" name="apellido">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Telefono</label>
+                                <input type="number" class="form-control" placeholder="Telefono" name="telefono">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Direccion</label>
+                                <input type="text" class="form-control" placeholder="Direccion" name="direccion">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Codigo Postal</label>
+                                <input type="text" class="form-control" placeholder="Codigo Postal" name="codigoPostal">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-dark" style="width: 100%;">Comprar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

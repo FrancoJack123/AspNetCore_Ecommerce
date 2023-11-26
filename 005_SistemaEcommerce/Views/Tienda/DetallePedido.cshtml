@@ -1,0 +1,59 @@
+﻿@model IEnumerable<_005_SistemaEcommerce.Models.DetallePedido>
+
+@{
+    ViewData["Title"] = "DetallePedido";
+}
+
+<!-- Page Heading/Breadcrumbs -->
+<h1 class="my-3"><small>Detalle Compra</small></h1>
+
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item">@Html.ActionLink("Ecommerce", "index", "Tienda")</li>
+    <li class="breadcrumb-item">@Html.ActionLink("Compras", "Pedido", "Tienda")</li>
+    <li class="breadcrumb-item active">Detalle Compra</li>
+</ol>
+
+<!-- Blog Post -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">Producto</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Nombre Producto</th>
+                            <th scope="col">Precio Unitario</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">
+                                    <img src="@Url.Content("~/Fotos/"+item.fotoProdu)" class="rounded" width="100" height="100">
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.cantidad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.nombreProdu)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.precioUnitario)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.precioTotal)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
